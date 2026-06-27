@@ -113,6 +113,7 @@
             padding: 25px;
             border-radius: 15px;
             border-left: 5px solid var(--lotte-red);
+            flex-shrink: 0;
         }
 
         .notice-item { margin-bottom: 15px; }
@@ -133,63 +134,93 @@
             line-height: 1.4;
         }
 
-        /* --- 오른쪽 메인 콘텐츠 (최대 5개 유연한 그리드 적용) --- */
+        /* --- 오른쪽 메인 콘텐츠 (가로 줄 형태로 분할되는 수직 스택) --- */
         .main-content {
             width: 72%;
-            padding: 50px;
+            padding: 30px 40px;
             background-color: var(--bg-light);
-            display: grid;
-            gap: 30px;
-            overflow-y: auto;
-            align-content: center;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        }
-
-        /* 단일/복수 카드 렌더링을 위한 유연한 설정 */
-        .count-1 { grid-template-columns: 1fr; }
-        .count-2 { grid-template-columns: 1fr 1fr; }
-        .count-3 { grid-template-columns: 1fr 1fr 1fr; }
-        .count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-        .count-5 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-
-        .course-card {
-            background: white;
-            border-radius: 25px;
-            padding: 35px 40px;
-            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            box-sizing: border-box;
-            animation: fadeInUp 0.6s ease-out forwards;
-            border-top: 6px solid var(--lotte-red);
+            gap: 20px;
+            overflow-y: auto;
+            justify-content: flex-start;
         }
 
+        /* 등록된 과정 개수(1~5)에 따라 가로 높이 자동 분할 및 폰트 유동 조절 */
+        .course-card {
+            background: white;
+            border-radius: 20px;
+            padding: 0 40px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-top: 6px solid var(--lotte-red);
+            flex-shrink: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* 1개일 때: 높이 100% 채움, 글씨 대폭 확대 */
+        .count-1 .course-card { height: 100%; }
+        .count-1 .title { font-size: 3.5rem !important; }
+        .count-1 .info-row { font-size: 1.8rem !important; }
+        .count-1 .room-info { min-height: 160px !important; }
+        .count-1 .room-info p { font-size: 3.5rem !important; }
+        .count-1 .direction-arrow { font-size: 8rem !important; }
+
+        /* 2개일 때: 높이 약 48% (남은 여백 감안) */
+        .count-2 .course-card { height: 48%; }
+        .count-2 .title { font-size: 2.4rem; }
+        .count-2 .info-row { font-size: 1.3rem; }
+
+        /* 3개일 때: 높이 약 31% */
+        .count-3 .course-card { height: 31%; }
+        .count-3 .title { font-size: 2.0rem; }
+        .count-3 .info-row { font-size: 1.15rem; }
+
+        /* 4개일 때: 높이 약 23% */
+        .count-4 .course-card { height: 23%; }
+        .count-4 .title { font-size: 1.6rem; }
+        .count-4 .info-row { font-size: 0.95rem; }
+        .count-4 .card-bottom { margin-top: 10px !important; }
+        .count-4 .room-info { min-height: 90px !important; padding: 10px 20px !important; }
+        .count-4 .room-info p { font-size: 1.6rem !important; }
+        .count-4 .direction-arrow { font-size: 4rem !important; }
+
+        /* 5개일 때: 높이 약 18% */
+        .count-5 .course-card { height: 18%; }
+        .count-5 .title { font-size: 1.4rem; }
+        .count-5 .info-row { font-size: 0.85rem; }
+        .count-5 .card-bottom { margin-top: 5px !important; }
+        .count-5 .room-info { min-height: 75px !important; padding: 5px 15px !important; }
+        .count-5 .room-info p { font-size: 1.4rem !important; }
+        .count-5 .direction-arrow { font-size: 3rem !important; }
+
+        .card-top { flex: 1; padding: 20px 0; }
+
         .card-top .title {
-            font-size: 2.4rem; 
+            font-size: 2.2rem; 
             font-weight: 800;
             color: var(--text-main);
             line-height: 1.3;
             word-break: keep-all;
-            margin-bottom: 20px;
-            min-height: 2.6em;
+            margin-bottom: 10px;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .card-top .info-group {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 30px;
         }
 
         .card-top .info-row {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--text-sub);
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
         }
@@ -197,7 +228,7 @@
         .card-top .info-label {
             color: var(--text-main);
             font-weight: 700;
-            min-width: 110px;
+            min-width: 80px;
             margin-right: 10px;
         }
 
@@ -205,17 +236,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
-            gap: 20px;
+            gap: 30px;
+            padding: 15px 0;
+            min-width: 320px;
         }
 
         .room-info {
             background: #FFF2F3; 
             border: 1px solid rgba(230, 0, 18, 0.08);
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 15px;
-            flex: 1;
-            min-height: 130px;
+            min-width: 160px;
+            min-height: 105px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -223,42 +255,36 @@
         }
 
         .room-info span {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--lotte-red);
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
 
         .room-info p {
-            font-size: 2.1rem;
+            font-size: 2.0rem;
             font-weight: 800;
             color: #222;
-            line-height: 1.25;
+            line-height: 1.2;
             word-break: keep-all;
             margin: 0;
+            letter-spacing: -0.5px;
         }
 
         .direction-arrow {
             flex-shrink: 0;
-            width: 80px; 
-            font-size: 6rem;
+            width: 70px; 
+            font-size: 5rem;
             color: var(--lotte-red);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* 1개짜리 과정을 위한 미세 조정 */
-        .count-1 .title { font-size: 4rem; min-height: 2.6em; }
-        .count-1 .info-row { font-size: 1.6rem; }
-        .count-1 .info-label { min-width: 140px; margin-right: 15px; }
-        .count-1 .direction-arrow { font-size: 10rem; width: 150px; }
-        .count-1 .room-info { min-height: 220px; }
-        .count-1 .room-info p { font-size: 3.5rem; }
-
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -301,10 +327,10 @@
 </div>
 
 <script>
-    // ★ 관리자 앱에 입력하는 통합 구글 시트 ID 지정
-    const SHEET_ID = '1T6gk3ediGcWimaS5EXVVxHnoqrW2aOdZJ5fGZVYVgLg';
+    // ★ 본인 구글 스프레드시트 ID 입력
+    const SHEET_ID = '1Fhdq_2UZQ9J4vU_PJp5pXbrYmdTvJmeWF7gk5bpAlGw';
     
-    // SVG 아이콘 적용
+    // SVG 아이콘 매핑
     const createArrow = (path) => `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="${path}"/></svg>`;
     
     const arrowMap = {
@@ -362,30 +388,43 @@
         return `${month}월 ${day}일(${dayOfWeek})`;
     }
 
-    // 시간 포맷 변환 (예: 09:00 - 18:00 형태를 '09시 - 18시'로 파싱)
-    function formatToCustomTime(startTimeStr, endTimeStr) {
-        if (!startTimeStr || !endTimeStr) return '-';
-        
-        const cleanTime = (t) => {
-            if (!t) return '';
-            const s = String(t).trim();
-            if (s.includes('Date')) return '';
-            return s.substring(0, 5);
+    // 시간 포맷 변환 로직 (요청하신 '09시 - 18시' 형식 적용)
+    function formatToCustomTime(startTimeCell, endTimeCell) {
+        if (!startTimeCell || !endTimeCell) return '-';
+
+        const extractHour = (cell) => {
+            if (!cell) return '';
+            // 1. 포맷된 문자열(f) 활용 (예: "09:00", "18:00")
+            if (cell.f && String(cell.f).includes(':')) {
+                return String(cell.f).substring(0, 2);
+            }
+            // 2. 값(v) 활용
+            if (cell.v) {
+                const vStr = String(cell.v);
+                if (vStr.includes(':')) return vStr.substring(0, 2);
+                if (vStr.length >= 4) return vStr.substring(0, 2);
+            }
+            return '';
         };
 
-        const sTime = cleanTime(startTimeStr);
-        const eTime = cleanTime(endTimeStr);
+        const sHour = extractHour(startTimeCell);
+        const eHour = extractHour(endTimeCell);
 
-        if (sTime && eTime) {
-            // HH:mm 앞 두 자리만 추출하여 '시' 연결
-            const sHour = sTime.substring(0, 2);
-            const eHour = eTime.substring(0, 2);
-            return `${sHour}시 - ${eHour}시`;
+        if (sHour && eHour) {
+            return `${parseInt(sHour, 10)}시 - ${parseInt(eHour, 10)}시`;
         }
-        return sTime || '-';
+        
+        // 예비 안전 파싱 (문자열 그대로 출력)
+        const sVal = startTimeCell.f || startTimeCell.v || '';
+        const eVal = endTimeCell.f || endTimeCell.v || '';
+        if (sVal && eVal) {
+            return `${String(sVal).substring(0,2)}시 - ${String(eVal).substring(0,2)}시`;
+        }
+
+        return '-';
     }
 
-    // 5층 전용 데이터 연동 및 조회 로직
+    // 구글 시트 데이터 로드 및 필터링
     async function fetchSheetData() {
         try {
             const targetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=교육일정`;
@@ -396,7 +435,7 @@
             const data = JSON.parse(jsonStr);
             const rows = data.table.rows;
 
-            // 로비에 표시할 기준일(오늘 날짜) 생성 YYYY-MM-DD
+            // 키오스크에 표시할 기준일(오늘 날짜: 2026-06-27) 생성
             const now = new Date();
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
@@ -413,8 +452,8 @@
                     const title = row.c[1] ? (row.c[1].v || row.c[1].f) : '';
                     const startDate = parseGvizDate(row.c[2]); 
                     const endDate = parseGvizDate(row.c[3]);
-                    const startTime = row.c[4] ? (row.c[4].v || row.c[4].f) : '';
-                    const endTime = row.c[5] ? (row.c[5].v || row.c[5].f) : '';
+                    const startTimeCell = row.c[4];
+                    const endTimeCell = row.c[5];
                     const floorVal = row.c[6] ? (row.c[6].v || row.c[6].f) : '';
                     const room = row.c[7] ? (row.c[7].v || row.c[7].f) : '';
                     const direction = row.c[8] ? (row.c[8].v || row.c[8].f) : 'right';
@@ -423,12 +462,11 @@
                     // 5층(5F 또는 5층) 필터링 조건
                     const is5Floor = String(floorVal).includes('5');
 
-                    // 상태: '예약', 5층 조건, 오늘 날짜가 시작/종료일 사이에 포함될 때만 출력
-                    if (status === '예약' && is5Floor && startDate <= todayStr && todayStr <= endDate) {
+                    // 오늘 날짜 기준 진행 중인 교육만 추출 (최대 5개 제한)
+                    if (status === '예약' && is5Floor && startDate <= todayStr && todayStr <= endDate && fiveFloorCourses.length < 5) {
                         
-                        // 날짜 및 시간 포맷 변환 적용
                         const customPeriod = `${formatToCustomDate(startDate)} - ${formatToCustomDate(endDate)}`;
-                        const customTime = formatToCustomTime(startTime, endTime);
+                        const customTime = formatToCustomTime(startTimeCell, endTimeCell);
 
                         fiveFloorCourses.push({
                             title: String(title),
@@ -445,23 +483,23 @@
 
         } catch (error) {
             console.error('데이터 로드 오류:', error);
-            document.getElementById('courseContainer').innerHTML = `<div style="grid-column: span 2; text-align:center; font-size:1.6rem; color:var(--lotte-red); align-self:center;">데이터 동기화 실패. 관리자 앱 설정을 확인해 주세요.</div>`;
+            document.getElementById('courseContainer').innerHTML = `<div style="color:var(--lotte-red); text-align:center; font-size:1.5rem; font-weight:700; align-self:center;">데이터 동기화 실패. 구글 시트 공유 권한(뷰어)을 확인하세요.</div>`;
         }
     }
 
     function renderDashboard(courses) {
         const container = document.getElementById('courseContainer');
         
-        // 카드 개수에 맞춘 동적 클래스 분기 (1~5개 최적화 대응)
+        // 카드 개수(1~5)에 맞춰 템플릿 CSS 동적 적용 (최대 5개 대응)
         container.className = `main-content count-${Math.min(courses.length, 5)}`;
         
         if (courses.length === 0) {
-            container.innerHTML = `<div style="grid-column: span 2; text-align:center; font-size:2rem; color:#999; align-self:center;">현재 진행 중인 교육 과정이 없습니다.</div>`;
+            container.innerHTML = `<div style="text-align:center; font-size:2rem; color:#999; align-self:center;">현재 5층에서 진행 중인 교육 과정이 없습니다.</div>`;
             return;
         }
 
         container.innerHTML = courses.map((course, index) => `
-            <div class="course-card" style="animation-delay: ${index * 0.1}s">
+            <div class="course-card" style="animation-delay: ${index * 0.08}s">
                 <div class="card-top">
                     <h2 class="title">${course.title}</h2>
                     <div class="info-group">
@@ -490,7 +528,7 @@
     setInterval(updateClock, 1000);
     
     fetchSheetData();
-    setInterval(fetchSheetData, 60000); // 1분 단위로 구글 시트 데이터 자동 동기화
+    setInterval(fetchSheetData, 60000); // 1분(60초) 단위로 데이터 최신화
 </script>
 
 </body>
