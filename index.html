@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>롯데지알에스 아카데미 5층 안내</title>
+    <title>롯데지알에스 아카데미 안내</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         :root {
             --lotte-red: #E60012;
-            --bg-light: #F4F5F7;
-            --text-main: #111111;
+            --bg-light: #F8F9FA;
+            --text-main: #1A1A1A;
             --text-sub: #666666;
-            --card-shadow: 0 12px 35px rgba(0,0,0,0.06);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
         body {
-            background-color: #1A1A1A;
+            background-color: #222;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,285 +31,290 @@
             height: 56.25vw;
             max-height: 100vh;
             max-width: 177.78vh;
-            background-color: var(--bg-light);
+            background-color: white;
             display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 120px rgba(0,0,0,0.7);
+            box-shadow: 0 0 100px rgba(0,0,0,0.5);
             position: relative;
         }
 
-        /* --- 상단 헤더 영역 --- */
-        header {
+        /* --- 왼쪽 사이드바 --- */
+        .sidebar {
+            width: 28%;
             background-color: white;
-            height: 110px;
-            padding: 0 60px;
+            border-right: 1px solid #EEE;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #E5E5E5;
+            flex-direction: column;
+            padding: 50px 40px;
             flex-shrink: 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .logo-area {
+            margin-bottom: 40px;
+            text-align: left;
         }
 
         .logo-img {
-            height: 32px;
+            height: 30px;
             width: auto;
         }
 
+        /* 시계 영역 */
         .clock-area {
-            text-align: right;
+            margin-bottom: 50px;
         }
 
         #current-date {
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             color: var(--text-sub);
-            font-weight: 600;
-            margin-bottom: 3px;
+            font-weight: 500;
+            margin-bottom: 5px;
         }
 
         #current-time {
-            font-size: 3.2rem;
+            font-size: 4.5rem;
             font-weight: 800;
             color: var(--text-main);
-            letter-spacing: -1.5px;
+            letter-spacing: -2px;
             line-height: 1;
         }
 
-        /* --- 서브 헤더 (층수 안내) --- */
-        .sub-header {
-            padding: 40px 60px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-shrink: 0;
-        }
-
-        .guide-box h2 {
-            font-size: 2.2rem;
-            color: var(--lotte-red);
-            font-weight: 800;
-        }
-
-        .guide-box p {
-            font-size: 1.25rem;
-            color: var(--text-sub);
-            font-weight: 500;
-            margin-top: 12px;
-            letter-spacing: -0.3px;
-        }
-        
-        .guide-box p strong {
-            color: var(--text-main);
-            background: #FFF0F1;
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-
-        /* --- 메인 콘텐츠 (강의장 카드 그리드 - 최대 5개 반응형 확장) --- */
-        .main-content {
+        /* 안내 문구 영역 */
+        .guide-area {
             flex: 1;
-            padding: 20px 60px 40px;
-            display: grid;
-            gap: 25px;
-            align-content: center;
-            /* 최대 5개까지 유연하게 배치되는 반응형 레이아웃 (5F 전용) */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
+
+        .guide-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--lotte-red);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-title::after {
+            content: "";
+            flex: 1;
+            height: 2px;
+            background: #EEE;
+        }
+
+        .guide-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #444;
+            word-break: keep-all;
+        }
+
+        /* 공지사항/WIFI (하단 고정) */
+        .notice-area {
+            background-color: #F9F9F9;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--lotte-red);
+        }
+
+        .notice-item { margin-bottom: 15px; }
+        .notice-item:last-child { margin-bottom: 0; }
+
+        .notice-label {
+            font-size: 0.85rem;
+            color: var(--lotte-red);
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .notice-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* --- 오른쪽 메인 콘텐츠 (최대 5개 유연한 그리드 적용) --- */
+        .main-content {
+            width: 72%;
+            padding: 50px;
+            background-color: var(--bg-light);
+            display: grid;
+            gap: 30px;
+            overflow-y: auto;
+            align-content: center;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        /* 단일/복수 카드 렌더링을 위한 유연한 설정 */
+        .count-1 { grid-template-columns: 1fr; }
+        .count-2 { grid-template-columns: 1fr 1fr; }
+        .count-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        .count-5 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
         .course-card {
             background: white;
-            border-radius: 28px;
+            border-radius: 25px;
+            padding: 35px 40px;
+            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100%;
-            min-height: 380px;
-            box-shadow: var(--card-shadow);
-            border-top: 8px solid var(--lotte-red);
+            position: relative;
             overflow: hidden;
+            height: 100%;
+            box-sizing: border-box;
             animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
+            border-top: 6px solid var(--lotte-red);
         }
 
-        .card-top {
-            padding: 35px 35px 20px;
-        }
-
-        .course-card .title {
-            font-size: 1.75rem;
+        .card-top .title {
+            font-size: 2.4rem; 
             font-weight: 800;
             color: var(--text-main);
-            line-height: 1.4;
+            line-height: 1.3;
             word-break: keep-all;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            min-height: 2.6em;
+            display: flex;
+            align-items: flex-start;
         }
 
-        .info-group {
+        .card-top .info-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            background: #F8F9FA;
-            padding: 20px;
-            border-radius: 18px;
-            border: 1px solid #EBECEF;
+            gap: 10px;
         }
 
-        .info-row {
-            display: flex;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .info-label {
-            width: 80px;
+        .card-top .info-row {
+            font-size: 1.25rem;
             color: var(--text-sub);
-            flex-shrink: 0;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-top .info-label {
+            color: var(--text-main);
+            font-weight: 700;
+            min-width: 110px;
+            margin-right: 10px;
         }
 
         .card-bottom {
-            background: #FAFAFA;
-            border-top: 1px solid #EEE;
-            padding: 25px 35px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .room-info {
+            background: #FFF2F3; 
+            border: 1px solid rgba(230, 0, 18, 0.08);
+            padding: 20px 30px;
+            border-radius: 15px;
+            flex: 1;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
         }
 
         .room-info span {
-            display: block;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: var(--text-sub);
-            letter-spacing: 1px;
-            margin-bottom: 4px;
+            color: var(--lotte-red);
+            display: block;
+            margin-bottom: 8px;
         }
 
         .room-info p {
-            font-size: 1.85rem;
+            font-size: 2.1rem;
             font-weight: 800;
-            color: var(--lotte-red);
-            line-height: 1;
-            letter-spacing: -0.5px;
+            color: #222;
+            line-height: 1.25;
+            word-break: keep-all;
+            margin: 0;
         }
 
         .direction-arrow {
-            width: 55px; height: 55px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
             flex-shrink: 0;
-            border: 1px solid #EAEAEA;
+            width: 80px; 
+            font-size: 6rem;
+            color: var(--lotte-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .direction-arrow svg {
-            width: 26px; height: 26px;
-            fill: var(--text-main);
-        }
+        /* 1개짜리 과정을 위한 미세 조정 */
+        .count-1 .title { font-size: 4rem; min-height: 2.6em; }
+        .count-1 .info-row { font-size: 1.6rem; }
+        .count-1 .info-label { min-width: 140px; margin-right: 15px; }
+        .count-1 .direction-arrow { font-size: 10rem; width: 150px; }
+        .count-1 .room-info { min-height: 220px; }
+        .count-1 .room-info p { font-size: 3.5rem; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .loading-text {
-            grid-column: 1 / -1;
-            text-align: center;
-            font-size: 1.6rem;
-            color: var(--text-sub);
-            font-weight: 600;
-        }
-
-        /* --- 하단 푸터 --- */
-        footer {
-            background-color: #FFFFFF;
-            height: 65px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid #E5E5E5;
-        }
-
-        .contact-capsule {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 8px 25px;
-            border-radius: 30px;
-        }
-
-        .contact-label {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--lotte-red);
-            letter-spacing: 1.5px;
-        }
-
-        .contact-divider {
-            width: 1px;
-            height: 14px;
-            background-color: #D1D1D1;
-        }
-
-        .contact-number {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: #111;
-            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
 <div id="dashboard">
-    <header>
+    <aside class="sidebar">
         <div class="logo-area">
             <img src="logo.png" alt="LOTTE GRS" class="logo-img">
         </div>
+
         <div class="clock-area">
             <div id="current-date">0000. 00. 00 (요일)</div>
             <div id="current-time">00:00</div>
         </div>
-    </header>
 
-    <div class="sub-header">
-        <div class="guide-box">
-            <h2>5층 강의장 안내</h2>
-            <p>현재 5층에서 진행 중인 교육 과정을 확인하실 수 있습니다. <strong>오늘 진행되는 교육만 표시</strong>됩니다.</p>
+        <div class="guide-area">
+            <div class="guide-title">5F 강의실 안내</div>
+            <p class="guide-text">
+                롯데지알에스 아카데미에 오신 것을 환영합니다.<br>
+                오늘 진행되는 교육 과정과 강의실 위치를 확인해 주시기 바랍니다.
+            </p>
         </div>
-    </div>
+
+         <div class="notice-area">
+            <div class="notice-item">
+                <span class="notice-label">Wi-Fi</span>
+                <p class="notice-value">ID : GRS_Academy_EXT<br>PW : grsacademy1!</p>
+            </div>
+            <div class="notice-item">
+                <span class="notice-label">Information</span>
+                <p class="notice-value">대표 번호 : 02-709-6920</p>
+            </div>
+        </div>
+    </aside>
 
     <main class="main-content" id="courseContainer">
-        <div class="loading-text">5층 교육 일정을 동기화 중입니다...</div>
     </main>
-
-    <footer>
-        <div class="contact-capsule">
-            <span class="contact-label">INFORMATION</span>
-            <span class="contact-divider"></span>
-            <span class="contact-number">02-709-6920</span>
-        </div>
-    </footer>
 </div>
 
 <script>
-    // ★ 연동할 구글 통합 스프레드시트 ID 입력 (관리자 앱과 동일한 ID)
+    // ★ 관리자 앱에 입력하는 통합 구글 시트 ID 지정
     const SHEET_ID = '1T6gk3ediGcWimaS5EXVVxHnoqrW2aOdZJ5fGZVYVgLg';
-
-    // 화살표 방향 매핑 딕셔너리
+    
+    // SVG 아이콘 적용
+    const createArrow = (path) => `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="${path}"/></svg>`;
+    
     const arrowMap = {
-        'up': `<svg viewBox="0 0 24 24"><path d="M12 2l-8 8h6v12h4v-12h6z"/></svg>`,
-        'down': `<svg viewBox="0 0 24 24"><path d="M12 22l8-8h-6v-12h-4v12h-6z"/></svg>`,
-        'left': `<svg viewBox="0 0 24 24"><path d="M2 12l8-8v6h12v4h-12v6z"/></svg>`,
-        'right': `<svg viewBox="0 0 24 24"><path d="M22 12l-8 8v-6h-12v-4h12v-6z"/></svg>`
+        'left': createArrow('M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z'),
+        'right': createArrow('M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z'),
+        'up': createArrow('M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z'),
+        'straight': createArrow('M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z'),
+        'down': createArrow('M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z')
     };
 
-    // 시계 동기화 함수
     function updateClock() {
         const now = new Date();
         const y = now.getFullYear();
@@ -323,7 +328,7 @@
         document.getElementById('current-time').innerText = `${hh}:${mm}`;
     }
 
-    // Gviz 날짜 데이터를 YYYY-MM-DD 형식의 문자열로 안전하게 변환
+    // Gviz 날짜 파싱 유틸리티
     function parseGvizDate(cell) {
         if (!cell) return '';
         if (cell.f) {
@@ -345,7 +350,42 @@
         return '';
     }
 
-    // 구글 시트 데이터 로드 및 5층 필터링 함수
+    // YYYY-MM-DD를 'M월 D일(요일)' 포맷으로 변환
+    function formatToCustomDate(dateStr) {
+        if (!dateStr) return '';
+        const parts = dateStr.split('-');
+        if (parts.length < 3) return dateStr;
+        const month = parseInt(parts[1], 10);
+        const day = parseInt(parts[2], 10);
+        const dateObj = new Date(dateStr);
+        const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][dateObj.getDay()];
+        return `${month}월 ${day}일(${dayOfWeek})`;
+    }
+
+    // 시간 포맷 변환 (예: 09:00 - 18:00 형태를 '09시 - 18시'로 파싱)
+    function formatToCustomTime(startTimeStr, endTimeStr) {
+        if (!startTimeStr || !endTimeStr) return '-';
+        
+        const cleanTime = (t) => {
+            if (!t) return '';
+            const s = String(t).trim();
+            if (s.includes('Date')) return '';
+            return s.substring(0, 5);
+        };
+
+        const sTime = cleanTime(startTimeStr);
+        const eTime = cleanTime(endTimeStr);
+
+        if (sTime && eTime) {
+            // HH:mm 앞 두 자리만 추출하여 '시' 연결
+            const sHour = sTime.substring(0, 2);
+            const eHour = eTime.substring(0, 2);
+            return `${sHour}시 - ${eHour}시`;
+        }
+        return sTime || '-';
+    }
+
+    // 5층 전용 데이터 연동 및 조회 로직
     async function fetchSheetData() {
         try {
             const targetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=교육일정`;
@@ -356,7 +396,7 @@
             const data = JSON.parse(jsonStr);
             const rows = data.table.rows;
 
-            // 조회 기준일(오늘 날짜) 생성 YYYY-MM-DD
+            // 로비에 표시할 기준일(오늘 날짜) 생성 YYYY-MM-DD
             const now = new Date();
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
@@ -369,26 +409,31 @@
                 rows.forEach(row => {
                     if (!row || !row.c) return;
                     
-                    // B(1): 과정명, C(2): 시작일, D(3): 종료일, E(4): 시간, F(5): 방향, G(6): 층, H(7): 강의장, K(10): 상태
+                    // 인덱스 B(1): 과정명, C(2): 시작일, D(3): 종료일, E(4): 시작시간, F(5): 종료시간, G(6): 층, H(7): 강의장, I(8): 방향, K(10): 상태
                     const title = row.c[1] ? (row.c[1].v || row.c[1].f) : '';
-                    const startDate = parseGvizDate(row.c[2]);
+                    const startDate = parseGvizDate(row.c[2]); 
                     const endDate = parseGvizDate(row.c[3]);
-                    const periodText = (startDate && endDate) ? `${startDate} ~ ${endDate}` : '';
-                    const time = row.c[4] ? (row.c[4].v || row.c[4].f) : '';
-                    const direction = row.c[5] ? (row.c[5].v || row.c[5].f) : 'right';
+                    const startTime = row.c[4] ? (row.c[4].v || row.c[4].f) : '';
+                    const endTime = row.c[5] ? (row.c[5].v || row.c[5].f) : '';
                     const floorVal = row.c[6] ? (row.c[6].v || row.c[6].f) : '';
                     const room = row.c[7] ? (row.c[7].v || row.c[7].f) : '';
+                    const direction = row.c[8] ? (row.c[8].v || row.c[8].f) : 'right';
                     const status = row.c[10] ? (row.c[10].v || row.c[10].f) : '';
 
-                    // ★ 5층(5F 또는 5층) 조건 및 오늘 날짜 포함 여부, 예약 상태 확인
+                    // 5층(5F 또는 5층) 필터링 조건
                     const is5Floor = String(floorVal).includes('5');
-                    const isTodayActive = (startDate <= todayStr && todayStr <= endDate);
 
-                    if (status === '예약' && is5Floor && isTodayActive) {
+                    // 상태: '예약', 5층 조건, 오늘 날짜가 시작/종료일 사이에 포함될 때만 출력
+                    if (status === '예약' && is5Floor && startDate <= todayStr && todayStr <= endDate) {
+                        
+                        // 날짜 및 시간 포맷 변환 적용
+                        const customPeriod = `${formatToCustomDate(startDate)} - ${formatToCustomDate(endDate)}`;
+                        const customTime = formatToCustomTime(startTime, endTime);
+
                         fiveFloorCourses.push({
                             title: String(title),
-                            period: periodText,
-                            time: String(time),
+                            period: customPeriod,
+                            time: customTime,
                             room: String(room),
                             direction: String(direction).toLowerCase()
                         });
@@ -396,35 +441,36 @@
                 });
             }
 
-            renderCourses(fiveFloorCourses);
+            renderDashboard(fiveFloorCourses);
 
         } catch (error) {
-            console.error('데이터 로드 실패:', error);
-            document.getElementById('courseContainer').innerHTML = `<div class="loading-text" style="color:var(--lotte-red);">데이터를 불러오지 못했습니다. 관리자 설정을 확인하세요.</div>`;
+            console.error('데이터 로드 오류:', error);
+            document.getElementById('courseContainer').innerHTML = `<div style="grid-column: span 2; text-align:center; font-size:1.6rem; color:var(--lotte-red); align-self:center;">데이터 동기화 실패. 관리자 앱 설정을 확인해 주세요.</div>`;
         }
     }
 
-    // 카드 렌더링 함수
-    function renderCourses(courses) {
+    function renderDashboard(courses) {
         const container = document.getElementById('courseContainer');
         
+        // 카드 개수에 맞춘 동적 클래스 분기 (1~5개 최적화 대응)
+        container.className = `main-content count-${Math.min(courses.length, 5)}`;
+        
         if (courses.length === 0) {
-            container.innerHTML = `<div class="loading-text">현재 5층에서 진행 중인 교육 과정이 없습니다.</div>`;
+            container.innerHTML = `<div style="grid-column: span 2; text-align:center; font-size:2rem; color:#999; align-self:center;">현재 진행 중인 교육 과정이 없습니다.</div>`;
             return;
         }
 
-        // 최대 5개까지 유연하게 표시되는 구조 렌더링
         container.innerHTML = courses.map((course, index) => `
-            <div class="course-card" style="animation-delay: ${index * 0.08}s">
+            <div class="course-card" style="animation-delay: ${index * 0.1}s">
                 <div class="card-top">
                     <h2 class="title">${course.title}</h2>
                     <div class="info-group">
                         <div class="info-row">
-                            <span class="info-label">교육 일정</span>
+                            <span class="info-label">교육 일정 :</span>
                             <span>${course.period || '-'}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">교육 시간</span>
+                            <span class="info-label">교육 시간 :</span>
                             <span>${course.time || '-'}</span>
                         </div>
                     </div>
@@ -440,12 +486,11 @@
         `).join('');
     }
 
-    // 주기적 실행 및 초기화
     updateClock();
     setInterval(updateClock, 1000);
     
     fetchSheetData();
-    setInterval(fetchSheetData, 60000); // 1분 단위로 구글 시트 동기화
+    setInterval(fetchSheetData, 60000); // 1분 단위로 구글 시트 데이터 자동 동기화
 </script>
 
 </body>
