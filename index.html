@@ -134,7 +134,7 @@
             line-height: 1.4;
         }
 
-        /* --- 오른쪽 메인 콘텐츠 (가로 줄 형태로 분할되는 수직 스택) --- */
+        /* --- 오른쪽 메인 콘텐츠 --- */
         .main-content {
             width: 72%;
             padding: 30px 40px;
@@ -144,6 +144,12 @@
             gap: 20px;
             overflow-y: auto;
             justify-content: flex-start;
+        }
+
+        /* 비어있을 때 가운데 정렬을 위한 클래스 */
+        .main-content.empty-mode {
+            justify-content: center;
+            align-items: center;
         }
 
         /* 등록된 과정 개수(1~5)에 따라 가로 높이 자동 분할 및 폰트 유동 조절 */
@@ -163,7 +169,7 @@
             opacity: 0;
         }
 
-        /* 1개일 때: 높이 100% 채움, 글씨 대폭 확대 */
+        /* 1개일 때 */
         .count-1 .course-card { height: 100%; }
         .count-1 .title { font-size: 3.5rem !important; }
         .count-1 .info-row { font-size: 1.8rem !important; }
@@ -171,17 +177,17 @@
         .count-1 .room-info p { font-size: 3.5rem !important; }
         .count-1 .direction-arrow { font-size: 8rem !important; }
 
-        /* 2개일 때: 높이 약 48% (남은 여백 감안) */
+        /* 2개일 때 */
         .count-2 .course-card { height: 48%; }
         .count-2 .title { font-size: 2.4rem; }
         .count-2 .info-row { font-size: 1.3rem; }
 
-        /* 3개일 때: 높이 약 31% */
+        /* 3개일 때 */
         .count-3 .course-card { height: 31%; }
         .count-3 .title { font-size: 2.0rem; }
         .count-3 .info-row { font-size: 1.15rem; }
 
-        /* 4개일 때: 높이 약 23% */
+        /* 4개일 때 */
         .count-4 .course-card { height: 23%; }
         .count-4 .title { font-size: 1.6rem; }
         .count-4 .info-row { font-size: 0.95rem; }
@@ -190,7 +196,7 @@
         .count-4 .room-info p { font-size: 1.6rem !important; }
         .count-4 .direction-arrow { font-size: 4rem !important; }
 
-        /* 5개일 때: 높이 약 18% */
+        /* 5개일 때 */
         .count-5 .course-card { height: 18%; }
         .count-5 .title { font-size: 1.4rem; }
         .count-5 .info-row { font-size: 0.85rem; }
@@ -327,7 +333,7 @@
 </div>
 
 <script>
-    // ★ 본인 구글 스프레드시트 ID 입력
+    // ★ 구글 시트 ID 설정
     const SHEET_ID = '1T6gk3ediGcWimaS5EXVVxHnoqrW2aOdZJ5fGZVYVgLg';
     
     // SVG 아이콘 매핑
@@ -388,17 +394,15 @@
         return `${month}월 ${day}일(${dayOfWeek})`;
     }
 
-    // 시간 포맷 변환 로직 (요청하신 '09시 - 18시' 형식 적용)
+    // 시간 포맷 변환 로직 ('09시 - 18시' 형식)
     function formatToCustomTime(startTimeCell, endTimeCell) {
         if (!startTimeCell || !endTimeCell) return '-';
 
         const extractHour = (cell) => {
             if (!cell) return '';
-            // 1. 포맷된 문자열(f) 활용 (예: "09:00", "18:00")
             if (cell.f && String(cell.f).includes(':')) {
                 return String(cell.f).substring(0, 2);
             }
-            // 2. 값(v) 활용
             if (cell.v) {
                 const vStr = String(cell.v);
                 if (vStr.includes(':')) return vStr.substring(0, 2);
@@ -414,7 +418,6 @@
             return `${parseInt(sHour, 10)}시 - ${parseInt(eHour, 10)}시`;
         }
         
-        // 예비 안전 파싱 (문자열 그대로 출력)
         const sVal = startTimeCell.f || startTimeCell.v || '';
         const eVal = endTimeCell.f || endTimeCell.v || '';
         if (sVal && eVal) {
@@ -435,7 +438,7 @@
             const data = JSON.parse(jsonStr);
             const rows = data.table.rows;
 
-            // 키오스크에 표시할 기준일(오늘 날짜: 2026-06-27) 생성
+            // 기준일: 오늘 날짜 (2026-06-27)
             const now = new Date();
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
@@ -448,7 +451,6 @@
                 rows.forEach(row => {
                     if (!row || !row.c) return;
                     
-                    // 인덱스 B(1): 과정명, C(2): 시작일, D(3): 종료일, E(4): 시작시간, F(5): 종료시간, G(6): 층, H(7): 강의장, I(8): 방향, K(10): 상태
                     const title = row.c[1] ? (row.c[1].v || row.c[1].f) : '';
                     const startDate = parseGvizDate(row.c[2]); 
                     const endDate = parseGvizDate(row.c[3]);
@@ -459,10 +461,8 @@
                     const direction = row.c[8] ? (row.c[8].v || row.c[8].f) : 'right';
                     const status = row.c[10] ? (row.c[10].v || row.c[10].f) : '';
 
-                    // 5층(5F 또는 5층) 필터링 조건
                     const is5Floor = String(floorVal).includes('5');
 
-                    // 오늘 날짜 기준 진행 중인 교육만 추출 (최대 5개 제한)
                     if (status === '예약' && is5Floor && startDate <= todayStr && todayStr <= endDate && fiveFloorCourses.length < 5) {
                         
                         const customPeriod = `${formatToCustomDate(startDate)} - ${formatToCustomDate(endDate)}`;
@@ -483,20 +483,22 @@
 
         } catch (error) {
             console.error('데이터 로드 오류:', error);
-            document.getElementById('courseContainer').innerHTML = `<div style="color:var(--lotte-red); text-align:center; font-size:1.5rem; font-weight:700; align-self:center;">데이터 동기화 실패. 구글 시트 공유 권한(뷰어)을 확인하세요.</div>`;
+            document.getElementById('courseContainer').innerHTML = `<div style="color:var(--lotte-red); text-align:center; font-size:1.5rem; font-weight:700; align-self:center;">데이터 동기화 실패. 구글 시트 뷰어 권한을 확인하세요.</div>`;
         }
     }
 
     function renderDashboard(courses) {
         const container = document.getElementById('courseContainer');
         
-        // 카드 개수(1~5)에 맞춰 템플릿 CSS 동적 적용 (최대 5개 대응)
-        container.className = `main-content count-${Math.min(courses.length, 5)}`;
-        
         if (courses.length === 0) {
-            container.innerHTML = `<div style="text-align:center; font-size:2rem; color:#999; align-self:center;">현재 5층에서 진행 중인 교육 과정이 없습니다.</div>`;
+            // 과정이 없을 때 안내 문구가 완벽하게 화면 정중앙에 오도록 클래스 부여
+            container.className = `main-content empty-mode`;
+            container.innerHTML = `<div style="text-align:center; font-size:2rem; font-weight:700; color:#999;">현재 5층에서 진행 중인 교육 과정이 없습니다.</div>`;
             return;
         }
+
+        // 과정 개수(1~5)에 맞춰 템플릿 CSS 동적 적용 (가로형 줄 분할)
+        container.className = `main-content count-${Math.min(courses.length, 5)}`;
 
         container.innerHTML = courses.map((course, index) => `
             <div class="course-card" style="animation-delay: ${index * 0.08}s">
@@ -528,7 +530,7 @@
     setInterval(updateClock, 1000);
     
     fetchSheetData();
-    setInterval(fetchSheetData, 60000); // 1분(60초) 단위로 데이터 최신화
+    setInterval(fetchSheetData, 60000); // 1분 단위 데이터 최신화
 </script>
 
 </body>
